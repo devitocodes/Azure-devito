@@ -2,7 +2,7 @@ batch_shipyard:
   storage_account_settings: .....
 global_resources:
   docker_images:
-  - .......
+  - mloubout/devito-bench:v0.1
   volumes:
     shared_data_volumes:
       azureblob_vol:
