@@ -3,7 +3,7 @@ job_specifications:
   shared_data_volumes:
   - azureblob_vol
   tasks:
-  - docker_image: mloubout/azure_elastic:tti
+  - docker_image: mloubout/devito-bench:v0.1
     environment_variables:
       DEVITO_ARCH: gcc-8
       OMP_NUM_THREADS: 4
