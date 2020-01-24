@@ -8,10 +8,12 @@ job_specifications:
       DEVITO_ARCH: gcc-8
       OMP_NUM_THREADS: 2
       OMP_PROC_BIND: 'close'
-      DEVITO_MPI: 0
+      DEVITO_MPI: 1
       DEVITO_OPENMP: 1
       OMP_PLACES: 'cores'
       DEVITO_LOGGING: 'DEBUG'
+      LC_ALL: 'C.UTF-8'
+      LANG: 'C.UTF-8'
     default_working_dir: container
     multi_instance:
       num_instances: pool_current_dedicated
@@ -20,4 +22,4 @@ job_specifications:
         processes_per_node: 2
         options:
           - --bind-to socket
-    command: python3 devito/examples/seismic/tti/tti_example.py -so 8
+    command: python3 devito/benchmarks/user/benchmark.py run -P acoustic --tn 40
