@@ -7,9 +7,9 @@ pool_specification:
       sku: 18.04-LTS
       native: true
   vm_count:
-    dedicated: 2
+    dedicated: 4
     low_priority: 0
-  vm_size: Standard_D4_v3
+  vm_size: Standard_H16
   inter_node_communication_enabled: true
   ssh:
     username: shipyard
