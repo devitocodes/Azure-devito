@@ -47,3 +47,4 @@ The `jobs.yaml` file contains among others definition of ENV_VARIABLES as well a
 - https://batch-shipyard.readthedocs.io/en/latest/02-batch-shipyard-quickstart/
 - https://batch-shipyard.readthedocs.io/en/latest/05-batch-shipyard-from-scratch-step-by-step/
 - https://docs.microsoft.com/en-us/learn/paths/azure-fundamentals/
+- https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes-hpc
