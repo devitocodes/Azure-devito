@@ -4,6 +4,5 @@
 # Arg1 is installation path of shipyard
 # Arg2 is the crentials file name
 
-$1/shipyard pool add --credentials $2
-$1/shipyard jobs add --credentials $2
-$1/shipyard pool del --credentials $2
+shipyard pool add --credentials $1
+shipyard jobs add --credentials $1
