@@ -13,6 +13,8 @@ git clone https://github.com/Azure/batch-shipyard.git
 cd batch-shipyard
 # Install
 ./install.sh
+# [Optional] Add a link for shipyard executable
+sudo  ln -s $INST_PATH/batch-shipyard/shipyard  /usr/local/bin/shipyard
 ```
 
 It is not going to create by default an executable in `/bin`
@@ -33,12 +35,12 @@ Batch and storage account should be under the same resource group.
 The keys can be found on the Azure portal, under 'Keys' tab
 for each of your account.
 - To create a pool, run:
-```$INST_PATH/batch-shipyard/shipyard pool add --credentials $PATH-TO-CREDENTIALS/credentials.yaml```
+```($INST_PATH/batch-shipyard/)shipyard pool add --credentials $PATH-TO-CREDENTIALS/credentials.yaml```
 
 The `pool.yaml` file contains specs for the vm_configuration such as platform image, VMs etc..
 
 - To run a job
-```$INST_PATH/batch-shipyard/shipyard jobs add --credentials $PATH-TO-CREDENTIALS/credentials.yaml```
+```($INST_PATH/batch-shipyard/)shipyard jobs add --credentials $PATH-TO-CREDENTIALS/credentials.yaml```
 
 The `jobs.yaml` file contains among others definition of ENV_VARIABLES as well as the commands to be executed.
 

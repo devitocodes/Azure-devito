@@ -46,7 +46,7 @@ pool_specification:
     username: shipyard
 """  # noqa
 
-    # Generate one PBS file for each `np` value
+    # Generate one pool file for each `np` value
     for nvm in kwargs['dedvm']:
         args['dedvm'] = nvm
 
