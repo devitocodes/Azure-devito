@@ -21,7 +21,7 @@ unless changed.
 
 ## Step 2 : Clone the current github repositiory
 ```
- git clone https://github.com/mloubout/Azure-devito.git
+ git clone https://github.com/devitocodes/Azure-devito.git
 ```
 
 ## Step 3 : Run Devito on Azure
