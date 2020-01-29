@@ -1,5 +1,5 @@
 pool_specification:
-  id: devito-bench
+  id: devito-benchs
   vm_configuration:
     platform_image:
       offer: UbuntuServer
@@ -7,8 +7,9 @@ pool_specification:
       sku: 18.04-LTS
       native: true
   vm_count:
-    dedicated: 4
+    dedicated: 32
     low_priority: 0
+  resize_timeout: 00:40:00
   vm_size: Standard_H16
   inter_node_communication_enabled: true
   ssh:
