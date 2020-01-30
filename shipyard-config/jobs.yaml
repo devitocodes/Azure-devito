@@ -3,9 +3,9 @@ job_specifications:
   shared_data_volumes:
   - azureblob_vol
   tasks:
-  - docker_image: mloubout/devito-bench:v0.1
+  - docker_image: mloubout/devito-bench:v0.2
     environment_variables:
-      DEVITO_ARCH: gcc-8
+      DEVITO_ARCH: gcc
       OMP_NUM_THREADS: 4
       OMP_PROC_BIND: 'close'
       DEVITO_MPI: 1

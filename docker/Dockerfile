@@ -2,8 +2,11 @@ FROM ubuntu:18.04
 
 # set up base and ssh keys
 COPY ssh_config /root/.ssh/config
-RUN apt-get update
-RUN apt-get install -y g++-8  make ca-certificates wget openssh-server openssh-client \
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential ca-certificates wget openssh-client openssh-server \
+        mpich libmpich-dev \
     && mkdir -p /var/run/sshd \
     && ssh-keygen -A \
     && sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config \
@@ -18,23 +21,11 @@ RUN apt-get install -y g++-8  make ca-certificates wget openssh-server openssh-c
 # Utils
 RUN apt-get install -y htop vim git-core
 
-# download and install OpenMPI
-ENV MPICH_VERSION="3.3"
-RUN wget -q -O - wget https://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz | tar -xzf - \
-    && cd mpich-${MPICH_VERSION} \
-    && ./configure --enable-mpirun-prefix-by-default --disable-fortran CC=gcc-8 CXX=g++-8 \
-    && make -j 8 && make install \
-    && cd .. \
-    && rm -rf mpich-${MPICH_VERSION}
-
 # Devito
 RUN apt-get install -y python3 python3-pip
 RUN pip3 install --upgrade pip
 RUN git clone https://github.com/devitocodes/devito.git
 RUN cd devito && pip3 install -e .[extras]
-
-RUN git clone https://github.com/devitocodes/devitobench.git
-RUN cd devitobench && pip3 install -e .
 
 # set up sshd on port 23
 EXPOSE 23
