@@ -1,0 +1,20 @@
+job_specifications:
+- id: bench
+  shared_data_volumes:
+  - azureblob_vol
+  tasks:
+  - docker_image: gbisbas/devito-bench-azure0.2:v0.1
+    environment_variables:
+      DEVITO_ARCH: gcc
+      OMP_NUM_THREADS: 8
+      DEVITO_OPENMP: 1
+      DEVITO_MPI: 1
+      DEVITO_LOGGING: 'DEBUG'
+    default_working_dir: container
+    multi_instance:
+      num_instances: pool_current_dedicated
+      mpi:
+        runtime: intelmpi
+        processes_per_node: 1
+      pre_execution_command: source /opt/intel/compilers_and_libraries/linux/mpi/bin64/mpivars.sh
+    command: python3 devito/examples/seismic/tti/tti_example.py
