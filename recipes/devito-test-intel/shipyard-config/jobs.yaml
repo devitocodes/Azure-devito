@@ -1,0 +1,20 @@
+job_specifications:
+- id: benchintel
+  tasks:
+  - docker_image: gbisbas/devito-intel:v0.9
+    environment_variables:
+      DEVITO_ARCH: gcc
+      OMP_NUM_THREADS: 8
+      DEVITO_OPENMP: 1
+      DEVITO_MPI: 1
+      DEVITO_LOGGING: 'DEBUG'
+    default_working_dir: container
+    multi_instance:
+      num_instances: pool_current_dedicated
+      mpi:
+        runtime: intelmpi
+        processes_per_node: 1
+      pre_execution_command: source /opt/intel/compilers_and_libraries/linux/mpi/bin64/mpivars.sh; mpirun --version; ls /opt/intel/compilers_and_libraries_2016.3.223/linux/mpi/intel64/bin; pip3 install mpi4py; python3 -c "import mpi4py; print(mpi4py.get_config())"; mpirun --version;
+    command: python3 devito/examples/seismic/tti/tti_example.py
+
+
