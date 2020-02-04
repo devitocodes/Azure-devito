@@ -1,0 +1,25 @@
+job_specifications:
+- id: benchmpich
+  shared_data_volumes:
+  - azureblob_vol
+  tasks:
+  - docker_image: gbisbas/devito-bench-azure0.2:v0.1
+    environment_variables:
+      DEVITO_ARCH: gcc
+      OMP_NUM_THREADS: 8
+      OMP_PROC_BIND: 'close'
+      DEVITO_MPI: 1
+      DEVITO_OPENMP: 1
+      OMP_PLACES: 'cores'
+      DEVITO_LOGGING: 'DEBUG'
+      LC_ALL: 'C.UTF-8'
+      LANG: 'C.UTF-8'
+    default_working_dir: container
+    multi_instance:
+      num_instances: pool_current_dedicated
+      mpi:
+        runtime: mpich
+        processes_per_node: 1
+        options:
+          - --bind-to socket
+    command: python3 devito/benchmarks/user/benchmark.py bench -P tti --tn 40 -d 1400 1400 1400 --resultsdir $AZ_BATCH_NODE_SHARED_DIR/results_bench --dse advanced --dle advanced -x 1
