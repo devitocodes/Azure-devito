@@ -4,7 +4,7 @@ FROM centos:7.1.1503
 COPY ssh_config /root/.ssh/config
 
 RUN yum swap -y fakesystemd systemd \
-    && yum install -y build-essential ca-certificates gcc gcc-c++ wget net-tools curl nss nss-util nspr openssh-client openssh-server \
+    && yum install -y build-essential ca-certificates gcc gcc-c++ wget net-tools curl openssh-client openssh-server openmpi-devel \
     && yum clean all \
     && mkdir -p /var/run/sshd \
     && ssh-keygen -A \
@@ -17,6 +17,10 @@ RUN yum swap -y fakesystemd systemd \
     && chmod 700 /root/.ssh \
     && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
+
+RUN export PATH=$PATH:/usr/lib64/openmpi/bin/
+RUN ln -s /usr/lib64/openmpi/bin/mpicc /usr/bin/mpicc
+
 # Utils
 RUN yum install -y htop vim git-core
 
@@ -24,7 +28,7 @@ RUN yum install -y htop vim git-core
 RUN yum install -y python3-devel python3 python3-pip
 RUN pip3 install --upgrade pip
 RUN git clone -b azure-make https://github.com/devitocodes/devito.git
-RUN cd devito && pip3 install --user -e .
+RUN cd devito && pip3 install -e .[extras]
 
 # set up sshd on port 23
 EXPOSE 23

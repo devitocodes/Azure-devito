@@ -1,5 +1,5 @@
 pool_specification:
-  id: docker-namd-rdma
+  id: docker-rdma
   vm_configuration:
     platform_image:
       publisher: OpenLogic
