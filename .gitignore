@@ -1,0 +1,20 @@
+credentials*.yaml
+
+# Editor Temp Files
+*.swp
+
+# pyenv
+.python-version
+
+# Visual Studio Code
+.vscode
+
+*.trace
+
+.cache/
+credentials/media/
+credentials/static/bundles/
+credentials/static/jsi18n/
+docs/_build/
+node_modules/
+webpack-stats.json
