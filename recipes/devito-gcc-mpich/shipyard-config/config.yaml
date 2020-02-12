@@ -1,0 +1,13 @@
+batch_shipyard:
+  storage_account_settings: mystorageaccount
+global_resources:
+  docker_images:
+  - gbisbas/devito-gcc-mpich:v0.2
+  volumes:
+    shared_data_volumes:
+      azureblob_vol:
+        volume_driver: azureblob
+        storage_account_settings: mystorageaccount
+        azure_blob_container_name: devito-bench
+        container_path: $AZ_BATCH_NODE_SHARED_DIR/bench-results
+        bind_options: rw
