@@ -7,13 +7,12 @@ job_specifications:
     environment_variables:
       DEVITO_ARCH: intel
       OMP_NUM_THREADS: 8
-      OMP_PROC_BIND: 'close'
       DEVITO_MPI: 1
       DEVITO_OPENMP: 1
-      OMP_PLACES: 'cores'
       DEVITO_LOGGING: 'DEBUG'
       LC_ALL: 'C.UTF-8'
       LANG: 'C.UTF-8'
+      KMP_AFFINITY: verbose,scatter,granularity=fine
     default_working_dir: container
     multi_instance:
       num_instances: pool_current_dedicated
@@ -22,5 +21,5 @@ job_specifications:
         processes_per_node: 2
         options:
           - --bind-to socket
-      pre_execution_command: source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux; source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh; pip3 install mpi4py; 
+      pre_execution_command: source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux;
     command: python3 devito/benchmarks/user/benchmark.py bench -P acoustic --tn 4000 -d 600 600 600 --resultsdir $AZ_BATCH_NODE_SHARED_DIR/results_bench --dse advanced --dle advanced --autotune off -x 1

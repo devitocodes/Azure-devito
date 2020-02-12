@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # set up base and ssh keys
 COPY ssh_config /root/.ssh/config
@@ -33,8 +34,8 @@ RUN cd /tmp/intel && \
   rm /tmp/icc-config.cfg
 
 RUN ls opt/intel/compilers_and_libraries/linux/
-RUN /bin/bash -c "source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux"
-RUN /bin/bash -c "source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh"
+RUN source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux
+RUN source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh
 
 # Utils
 RUN apt-get install -y htop vim git-core
@@ -42,8 +43,8 @@ RUN apt-get install -y htop vim git-core
 # Devito
 RUN apt-get install -y python3 python3-pip
 RUN pip3 install --upgrade pip
-RUN git clone -b azure-make https://github.com/devitocodes/devito.git
-RUN cd devito && pip3 install -e .[extras]
+RUN git clone https://github.com/devitocodes/devito.git
+RUN source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh && cd devito && pip3 install -e .[extras]
 
 # set up sshd on port 23
 EXPOSE 23

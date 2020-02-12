@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # set up base and ssh keys
 COPY ssh_config /root/.ssh/config
