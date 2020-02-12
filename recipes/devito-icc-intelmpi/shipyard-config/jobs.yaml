@@ -1,0 +1,31 @@
+job_specifications:
+- id: bench-icc-intelmp
+  shared_data_volumes:
+  - azureblob_vol
+  tasks:
+  - docker_image: gbisbas/devitoicc:v0.4
+    environment_variables:
+      DEVITO_ARCH: intel
+      OMP_NUM_THREADS: 8
+      DEVITO_MPI: 1
+      DEVITO_OPENMP: 1
+      KMP_AFFINITY: verbose,scatter,granularity=fine
+      DEVITO_LOGGING: 'DEBUG'
+      LC_ALL: 'C.UTF-8'
+      LANG: 'C.UTF-8'
+      I_MPI_DEBUG: '2'
+      I_MPI_FABRICS: 'ofi'
+      I_MPI_PIN: 1
+      I_MPI_PIN_DOMAIN: socket
+      I_MPI_DAPL_PROVIDER: ofa-v2-ib0
+      I_MPI_DYNAMIC_CONNECTION: 0
+      I_MPI_DAPL_TRANSLATION_CACHE: 0
+      FI_PROVIDER: sockets
+    default_working_dir: container
+    multi_instance:
+      num_instances: pool_current_dedicated
+      mpi:
+        runtime: intelmpi
+        processes_per_node: 1
+      pre_execution_command: source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux; source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh; 
+    command: python3 devito/benchmarks/user/benchmark.py bench -P acoustic --tn 4000 -d 600 600 600 --resultsdir $AZ_BATCH_NODE_SHARED_DIR/results_bench --dse advanced --dle advanced --autotune off -x 1

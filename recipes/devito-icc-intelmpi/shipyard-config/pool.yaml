@@ -1,0 +1,15 @@
+pool_specification:
+  id: devito-icc-intelmp
+  vm_configuration:
+    platform_image:
+      publisher: OpenLogic
+      offer: CentOS-HPC
+      sku: '7.6'
+  vm_count:
+    dedicated: 4
+    low_priority: 0
+  resize_timeout: 00:40:00
+  vm_size: Standard_H16R
+  inter_node_communication_enabled: true
+  ssh:
+    username: shipyard
