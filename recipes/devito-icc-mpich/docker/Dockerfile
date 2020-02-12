@@ -18,15 +18,23 @@ RUN apt-get update \
     && chmod 700 /root/.ssh \
     && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y cpio libgtk2.0 xorg openbox
 
+COPY /parallel_studio_xe_2020_cluster_edition_online/silent.cfg /tmp/icc-config.cfg
+ADD /parallel_studio_xe_2020_cluster_edition_online /tmp/intel
+RUN cd /tmp/intel && \
+  ./install.sh --silent=/tmp/icc-config.cfg --components intel-mpi-psxe__x86_64 && \
+  ./install.sh --silent=/tmp/icc-config.cfg --components intel-icc__x86_64 && \
+  ./install.sh --silent=/tmp/icc-config.cfg --components intel-mpi-sdk__x86_64 && \
+  ./install.sh --silent=/tmp/icc-config.cfg --components intel-mpi-rt__x86_64 && \
+  cd ../../ && \
+  rm -rf /tmp/intel && \
+  rm /tmp/icc-config.cfg
 
-
-
-
-
-
-
-
+RUN ls opt/intel/compilers_and_libraries/linux/
+RUN /bin/bash -c "source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux"
+RUN /bin/bash -c "source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh"
 
 # Utils
 RUN apt-get install -y htop vim git-core

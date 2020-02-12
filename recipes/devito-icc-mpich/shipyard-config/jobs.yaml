@@ -22,5 +22,5 @@ job_specifications:
         processes_per_node: 2
         options:
           - --bind-to socket
-      pre_execution_command: source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux; source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh; pip3 install mpi4py; mpirun --version; mpiexec --version; apt-get -y install mpich libmpich-dev;
+      pre_execution_command: source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux; source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh; pip3 install mpi4py; 
     command: python3 devito/benchmarks/user/benchmark.py bench -P acoustic --tn 4000 -d 600 600 600 --resultsdir $AZ_BATCH_NODE_SHARED_DIR/results_bench --dse advanced --dle advanced --autotune off -x 1
