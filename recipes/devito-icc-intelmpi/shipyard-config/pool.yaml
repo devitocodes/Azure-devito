@@ -1,5 +1,5 @@
 pool_specification:
-  id: devito-icc-intelmp
+  id: devito-icc-intelmpi
   vm_configuration:
     platform_image:
       publisher: OpenLogic
@@ -9,7 +9,7 @@ pool_specification:
     dedicated: 4
     low_priority: 0
   resize_timeout: 00:40:00
-  vm_size: Standard_H16R
+  vm_size: Standard_HC44rs
   inter_node_communication_enabled: true
   ssh:
     username: shipyard

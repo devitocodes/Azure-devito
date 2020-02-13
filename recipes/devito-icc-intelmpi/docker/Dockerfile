@@ -1,4 +1,4 @@
-FROM centos:7.1.1503
+FROM centos:7.6.1810
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # set up base and ssh keys
@@ -7,7 +7,7 @@ COPY ssh_config /root/.ssh/config
 RUN yum swap -y fakesystemd systemd
 RUN yum -y update \
     && yum install -y \
-        build-essential ca-certificates wget openssh-client numactl openssh-server curl gcc-c++ \
+        build-essential ca-certificates wget openssh-client numactl openssh-server curl gcc gcc-c++ systemd-devel ucx libgudev1-devel libgudev1 zlib-devel zlib libxml2 libxml2-devel binutils binutils-devel numactl-devel install libpsm2 libpsm2-devel librdmacm librdmacm-devel\
     && yum clean all \
     && mkdir -p /var/run/sshd \
     && ssh-keygen -A \
@@ -23,18 +23,20 @@ RUN yum -y update \
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN yum install -y cpio libgtk2.0 xorg openbox
-COPY /parallel_studio_xe_2020_cluster_edition_online/silent.cfg /tmp/icc-config.cfg
+COPY conf_mpi_test.cfg /tmp/icc-config.cfg
 ADD /parallel_studio_xe_2020_cluster_edition_online /tmp/intel
 RUN cd /tmp/intel && \
-   ./install.sh --silent=/tmp/icc-config.cfg --components intel-mpi-psxe__x86_64 && \
-   ./install.sh --silent=/tmp/icc-config.cfg --components intel-icc__x86_64 && \
-   ./install.sh --silent=/tmp/icc-config.cfg --components intel-mpi-sdk__x86_64 && \
+   ./install.sh --silent=/tmp/icc-config.cfg && \
    cd ../../ && \
    rm -rf /tmp/intel && \
    rm /tmp/icc-config.cfg
 
-RUN source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux && icc --help
-RUN source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh && mpirun --version
+RUN mkdir /opt/intelicc/compilers_and_libraries_2020.0.166/linux/licenses/
+COPY x.lic /opt/intelicc/compilers_and_libraries_2020.0.166/linux/licenses/
+RUN ls /opt/intelicc/compilers_and_libraries_2020.0.166/linux/licenses/
+
+RUN source /opt/intelicc/compilers_and_libraries/linux/bin/compilervars.sh -arch intel64 -platform linux && icc --help
+RUN source /opt/intelicc/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh && mpirun --help
 
 # RUN ls /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/
 
@@ -45,7 +47,7 @@ RUN yum install -y htop vim git-core
 RUN yum install -y python3 python3-pip python3-devel
 RUN pip3 install --upgrade pip
 RUN git clone https://github.com/devitocodes/devito.git
-RUN source /opt/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh && cd devito && pip3 install -e .[extras]
+RUN source /opt/intelicc/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh && cd devito && pip3 install -e .[extras]
 
 # set up sshd on port 23
 EXPOSE 23
