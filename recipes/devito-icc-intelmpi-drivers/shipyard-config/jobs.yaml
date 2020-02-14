@@ -1,0 +1,30 @@
+job_specifications:
+- id: bench-icc-intelmpi
+  shared_data_volumes:
+  - azureblob_vol
+  tasks:
+  - docker_image: gbisbas/devitoicc:v0.8dhc44
+    environment_variables:
+      DEVITO_ARCH: intel
+      OMP_NUM_THREADS: 22
+      DEVITO_MPI: 1
+      DEVITO_OPENMP: 1
+      KMP_AFFINITY: compact, granularity=core
+      DEVITO_LOGGING: DEBUG
+      # I_MPI_DEBUG: 2
+      I_MPI_PIN: 1
+      I_MPI_PIN_DOMAIN: sockets
+      # I_MPI_HYDRA_DEBUG: 1
+      FI_LOG_LEVEL: debug
+      LC_ALL: 'en_US.UTF-8'
+      UCX_TLS: ud,sm,self
+    default_working_dir: container
+    multi_instance:
+      num_instances: pool_current_dedicated
+      mpi:
+        runtime: intelmpi
+        processes_per_node: 1
+      pre_execution_command: source /opt/intelicc/compilers_and_libraries_2020.0.166/linux/bin/compilervars.sh -arch intel64 -platform linux; which icc; which mpicc; which mpirun; which mpiexec; ls;
+    command: python3 devito/examples/seismic/acoustic/acoustic_example.py
+    # IMB-MPI1 
+    # python3 devito/benchmarks/user/benchmark.py bench -P elastic --tn 400 -d 100 100 100 --resultsdir $AZ_BATCH_NODE_SHARED_DIR/results_bench --arch intel --dse advanced --dle advanced -x 1
